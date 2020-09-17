@@ -16,4 +16,15 @@ nonPowr(A,[_|T],NoPow,X):-nonPowr(A,T,NoPow,X).
 allDelList(A,X):- allDelList(A,[],X).
 allDelList([],X,X):-!.
 allDelList([H|T],Del,X):- allDel(H,Del1), nonPowr(Del,Del1,Del2), allDelList(T,Del2,X).
-allDelList([H|T],Del,X):-  allDelList(T,Del,X).
+allDelList([_|T],Del,X):-  allDelList(T,Del,X).
+
+readList(A,N):- readList(A,[],N).
+readList(A,A,0):-!.
+readList(A,B,N):-read(H), N1 is N-1, readList(A, [H|B], N1).
+
+writeList([]):-!.
+writeList([H|T]):-write(H),write(","), writeList(T).
+
+prog:-writeln("input len list"),read(N),writeln("input list"),
+readList(A,N),writeln("All del:"),
+allDelList(A,X),writeList(X).
