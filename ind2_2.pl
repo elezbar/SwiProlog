@@ -1,6 +1,6 @@
 readList(A,N):- readList(A,[],N).
 readList(A,A,0):-!.
-readList(A,B,N):-read(H), N1 is N-1, readList(A, [H|B], N1).
+readList(A,B,N):-read(H), N1 is N-1, append(B,[H],I), readList(A, I, N1).
 
 writeList([]):-!.
 writeList([H|T]):-write(H),write(","), writeList(T).
@@ -17,5 +17,9 @@ kolpowt([_|T],N,I,X):-kolpowt(T,N,I,X).
 
 maxpowt(A,X):-maxpowt(A,A,0,X).
 maxpowt(_,[],N,N):-!.
-maxpowt(A,[H|T],N,X):-kolpowt(A,H,X1), kolpowt(A,N,X2), X1>X2, maxpowt(A,T,X1,X).
-maxpowt(A,[_|T],N,X):-kolpowt(A,T,N,X).
+maxpowt(A,[H|T],N,X):-kolpowt(A,H,X1), kolpowt(A,N,X2), X1>X2, maxpowt(A,T,H,X).
+maxpowt(A,[_|T],N,X):-maxpowt(A,T,N,X).
+
+prog:-writeln("input len list"),read(N),writeln("input list"),
+readList(A,N),writeln("All index's max elem:"),
+maxpowt(A,X), spisindex(A,X,L),writeList(L).
