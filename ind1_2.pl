@@ -22,15 +22,17 @@ getMaxIzbInd(A,B,X):- B1 is B +1, getMaxIzbInd(A,B1,X),!.
 
 % Проверка возможности составления числа из суммы двух избыточных
 provSumIzb(A):- A < 24,!, false.
-provSumIzb(A):- getMaxIzbInd(A,X), X1 is X - 1, provSumIzb(A,1,X1,X1),!.
-provSumIzb(_,Low,High,Highmax):- Low > Highmax, High < 2,!,false.
-provSumIzb(A,Low,High,Highmax):- Low > Highmax, High1 is High - 1,
+provSumIzb(A):- getMaxIzbInd(A,X), X1 is X - 1, provSumIzb(A,1,1,X1),!.
+provSumIzb(_,Low,High,Highmax):- Low > Highmax, High > Highmax ,!,false.
+provSumIzb(A,Low,High,Highmax):- Low > Highmax, High1 is High + 1,
                               provSumIzb(A,1,High1,Highmax),!.
 provSumIzb(A,Low,High,_):- getIzb(Low,N1), getIzb(High,N2), A is N1 + N2,!.
 provSumIzb(A,Low,High,Highmax):- Low < Highmax +1,Low1 is Low + 1, provSumIzb(A,Low1,High,Highmax),!.
 
 %Подсчёт всех чисел, состоящий из суммы 2 избыточных.
 kolvoIzb(X):- kolvoIzb(X,0,24).
-kolvoIzb(K,K,200):-!.
+kolvoIzb(K,K,500):-!.
 kolvoIzb(X,K,I):- provSumIzb(I), I1 is I+1, K1 is K + 1, kolvoIzb(X,K1,I1),!.
 kolvoIzb(X,K,I):-  I1 is I+1, kolvoIzb(X,K,I1),!.
+
+prog:- get_time(T), kolvoIzb(X), get_time(T1), T2 is T1 - T, writeln(T2), writeln(X).
