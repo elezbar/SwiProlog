@@ -22,9 +22,9 @@ getMaxIzbInd(A,B,X):- B1 is B +1, getMaxIzbInd(A,B1,X),!.
 
 % Проверка возможности составления числа из суммы двух избыточных
 provSumIzb(A):- A < 24,!, false.
-provSumIzb(A):- getMaxIzbInd(A,X), X1 is X - 1, provSumIzb(A,1,1,X1),!.
-provSumIzb(_,Low,High,Highmax):- Low > Highmax, High > Highmax ,!,false.
-provSumIzb(A,Low,High,Highmax):- Low > Highmax, High1 is High + 1,
+provSumIzb(A):- getMaxIzbInd(A,X), X1 is X - 1, provSumIzb(A,1,X1,X1),!.
+provSumIzb(_,Low,High,Highmax):- Low > Highmax, High < 2 ,!,false.
+provSumIzb(A,Low,High,Highmax):- Low > Highmax, High1 is High - 1,
                               provSumIzb(A,1,High1,Highmax),!.
 provSumIzb(A,Low,High,_):- getIzb(Low,N1), getIzb(High,N2), A is N1 + N2,!.
 provSumIzb(A,Low,High,Highmax):- Low < Highmax +1,Low1 is Low + 1, provSumIzb(A,Low1,High,Highmax),!.
